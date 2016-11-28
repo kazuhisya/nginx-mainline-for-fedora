@@ -12,10 +12,10 @@ RUN dnf install -y --setopt=tsflags=nodocs \
     openssl-devel \
     pcre-devel \
     rpm-build
-COPY / /nginx-fedora
+COPY / /nginx-mainline-for-fedora
 RUN curl -OL http://nginx.org/packages/mainline/centos/7/SRPMS/nginx-${NGINX_VERSION}-${NGINX_RELEASE}.el7.ngx.src.rpm && \
     rpm -ivh ./nginx-${NGINX_VERSION}-${NGINX_RELEASE}.el7.ngx.src.rpm && \
-    patch -u /root/rpmbuild/SPECS/nginx.spec /nginx-fedora/nginx-fedora.patch && \
+    patch -u /root/rpmbuild/SPECS/nginx.spec /nginx-mainline-for-fedora/nginx-fedora.patch && \
     rpmbuild -ba /root/rpmbuild/SPECS/nginx.spec && \
     dnf install -y --setopt=tsflags=nodocs /root/rpmbuild/RPMS/x86_64/nginx-[^d.+].*
 CMD ["nginx", "-T"]
