@@ -13,7 +13,7 @@ dependencies:
 test:
   override:
     - docker run -ti kazuhisya/nginx-mainline-for-fedora /bin/true
-    - docker run -ti --entrypoint nginx -T
+    - docker run -ti kazuhisya/nginx-mainline-for-fedora nginx -T
   post:
     - docker cp $(docker ps -lq):/root/rpmbuild/RPMS/x86_64 $CIRCLE_ARTIFACTS
 deployment:
