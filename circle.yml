@@ -21,4 +21,4 @@ deployment:
     branch: master
     owner: kazuhisya
     commands:
-      - docker run -e COPR_LOGIN=$COPR_LOGIN -e COPR_USERNAME=$COPR_USERNAME -e COPR_TOKEN=$COPR_TOKEN --entrypoint "/root/rpmbuild/nginx-mainline-for-fedora/copr-deploy.sh" kazuhisya/nginx-mainline-for-fedora
+      - docker run -e COPR_LOGIN=$COPR_LOGIN -e COPR_USERNAME=$COPR_USERNAME -e COPR_TOKEN=$COPR_TOKEN --entrypoint "/nginx-mainline-for-fedora/copr-deploy.sh" kazuhisya/nginx-mainline-for-fedora

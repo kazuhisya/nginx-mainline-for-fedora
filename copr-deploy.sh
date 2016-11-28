@@ -15,6 +15,6 @@ token = ${copr_token}
 copr_url = https://copr.fedoraproject.org
 EOF
 
-srpm_file=`basename SRPMS/*.src.rpm`
+srpm_file=`basename /root/rpmbuild/SRPMS/*.src.rpm`
 copr-cli build --nowait ${project_name} /root/rpmbuild/SRPMS/${srpm_file}
 
