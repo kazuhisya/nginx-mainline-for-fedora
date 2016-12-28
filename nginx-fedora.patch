@@ -1,18 +1,12 @@
---- nginx.spec.org	2016-11-28 14:58:48.104711731 +0900
-+++ nginx.spec	2016-11-28 15:09:34.686687892 +0900
+diff -aurN nginx-1.11.8-1.el7.ngx.src.orig/nginx.spec nginx-1.11.8-1.el7.ngx.src/nginx.spec > nginx-fedora.patch
+--- nginx-1.11.8-1.el7.ngx.src.orig/nginx.spec	2016-12-28 10:29:57.315897713 +0900
++++ nginx-1.11.8-1.el7.ngx.src/nginx.spec	2016-12-28 10:31:41.812893860 +0900
 @@ -25,7 +25,7 @@
  BuildRequires: openssl-devel >= 1.0.1
  %endif
-
+ 
 -%if 0%{?rhel} == 7
 +%if (0%{?rhel} == 7 || 0%{?fedora} >= 18)
  %define _group System Environment/Daemons
  %define epoch 1
  Epoch: %{epoch}
-@@ -325,7 +325,7 @@
- * Tue May 31 2016 Konstantin Pavlov <thresh@nginx.com>
- - 1.11.1
-
--* Wed May 24 2016 Sergey Budnevitch <sb@nginx.com>
-+* Tue May 24 2016 Sergey Budnevitch <sb@nginx.com>
- - Fixed logrotate error if nginx is not running
