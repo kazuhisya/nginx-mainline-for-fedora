@@ -16,6 +16,7 @@ test:
     - docker run -ti kazuhisya/nginx-mainline-for-fedora nginx -T
   post:
     - docker cp $(docker ps -lq):/root/rpmbuild/RPMS/x86_64 $CIRCLE_ARTIFACTS
+    - docker cp $(docker ps -lq):/root/rpmbuild/SRPMS $CIRCLE_ARTIFACTS
 deployment:
   copr:
     branch: master
