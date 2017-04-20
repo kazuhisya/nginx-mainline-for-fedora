@@ -1,7 +1,7 @@
-diff -aurN nginx-1.11.10-1.el7.ngx.src.orig/nginx.spec nginx-1.11.10-1.el7.ngx.src/nginx.spec
---- nginx-1.11.10-1.el7.ngx.src.orig/nginx.spec	2017-02-16 19:17:24.947789127 +0900
-+++ nginx-1.11.10-1.el7.ngx.src/nginx.spec	2017-02-16 19:19:38.830784191 +0900
-@@ -25,7 +25,7 @@
+diff -aurN nginx-1.11.13-1.el7.ngx.src.orig/nginx.spec nginx-1.11.13-1.el7.ngx.src/nginx.spec
+--- nginx-1.11.13-1.el7.ngx.src.orig/nginx.spec 2017-04-20 20:57:10.370565936 +0900
++++ nginx-1.11.13-1.el7.ngx.src/nginx.spec  2017-04-20 20:57:09.197565979 +0900
+@@ -25,16 +25,28 @@
  BuildRequires: openssl-devel >= 1.0.1
  %endif
  
@@ -10,20 +10,29 @@ diff -aurN nginx-1.11.10-1.el7.ngx.src.orig/nginx.spec nginx-1.11.10-1.el7.ngx.s
  %define _group System Environment/Daemons
  %define epoch 1
  Epoch: %{epoch}
-@@ -36,6 +36,12 @@
+ Requires(pre): shadow-utils
+ Requires: systemd
+-Requires: openssl >= 1.0.1
+ BuildRequires: systemd
++
++%if (0%{?fedora} >= 26)
++Requires: compat-openssl10 >= 1.0.1
++BuildRequires: compat-openssl10-devel >= 1.0.1
++%else
++Requires: openssl >= 1.0.1
  BuildRequires: openssl-devel >= 1.0.1
  %endif
- 
++%endif
++
 +%if 0%{?fedora} >= 18
 +# removes -Werror in upstream build scripts.  -Werror conflicts with
 +# -D_FORTIFY_SOURCE=2 causing warnings to turn into errors.
 +Patch0: nginx-auto-cc-gcc.patch
 +%endif
-+
+ 
  %if 0%{?suse_version} == 1315
  %define _group Productivity/Networking/Web/Servers
- %define nginx_loggroup trusted
-@@ -102,6 +108,9 @@
+@@ -102,8 +114,15 @@
      -e 's|%%PROVIDES%%|nginx|g' < %{SOURCE2} > nginx.init
  sed -e 's|%%DEFAULTSTART%%||g' -e 's|%%DEFAULTSTOP%%|0 1 2 3 4 5 6|g' \
      -e 's|%%PROVIDES%%|nginx-debug|g' < %{SOURCE2} > nginx-debug.init
@@ -32,4 +41,10 @@ diff -aurN nginx-1.11.10-1.el7.ngx.src.orig/nginx.spec nginx-1.11.10-1.el7.ngx.s
 +%endif
  
  %build
++%if 0%{?fedora} >= 26
++export CFLAGS="-Wno-error"
++%endif
++
  ./configure %{BASE_CONFIGURE_ARGS} \
+     --with-cc-opt="%{WITH_CC_OPT}" \
+     --with-ld-opt="%{WITH_LD_OPT}" \
