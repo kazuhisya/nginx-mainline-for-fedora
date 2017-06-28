@@ -3,7 +3,7 @@ MAINTAINER Kazuhisa Hara <kazuhisya@gmail.com>
 
 ENV TZ="JST-9" \
     MAINTAINER="Kazuhisa Hara <kazuhisya@gmail.com>" \
-    NGINX_VERSION="1.13.1" \
+    NGINX_VERSION="1.13.2" \
     NGINX_RELEASE="1"
 
 RUN dnf install -y --setopt=tsflags=nodocs \
