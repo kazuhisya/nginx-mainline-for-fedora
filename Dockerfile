@@ -1,15 +1,15 @@
-FROM docker.io/fedora:25
+FROM docker.io/fedora:26
 MAINTAINER Kazuhisa Hara <kazuhisya@gmail.com>
 
 ENV TZ="JST-9" \
     MAINTAINER="Kazuhisa Hara <kazuhisya@gmail.com>" \
-    NGINX_VERSION="1.13.2" \
+    NGINX_VERSION="1.13.3" \
     NGINX_RELEASE="1"
 
 RUN dnf install -y --setopt=tsflags=nodocs \
     gcc \
     make \
-    openssl-devel \
+    compat-openssl10-devel \
     pcre-devel \
     rpm-build
 COPY / /nginx-mainline-for-fedora
