@@ -1,38 +1,30 @@
-diff -aurN nginx-1.13.5-1.el7.ngx.src.orig/nginx.spec nginx-1.13.5-1.el7.ngx.src/nginx.spec
---- nginx-1.13.5-1.el7.ngx.src.orig/nginx.spec	2017-09-07 10:11:03.949952310 +0900
-+++ nginx-1.13.5-1.el7.ngx.src/nginx.spec	2017-09-07 10:17:40.960937672 +0900
-@@ -25,16 +25,27 @@
+diff -aurN nginx-1.13.6-1.el7_4.ngx.src.orig/nginx.spec nginx-1.13.6-1.el7_4.ngx.src/nginx.spec
+--- nginx-1.13.6-1.el7_4.ngx.src.orig/nginx.spec	2017-10-11 00:58:54.000000000 +0900
++++ nginx-1.13.6-1.el7_4.ngx.src/nginx.spec	2017-10-23 12:27:32.217316627 +0900
+@@ -29,6 +29,9 @@
+ Requires: openssl >= 1.0.2
+ BuildRequires: openssl-devel >= 1.0.2
+ %define dist .el7_4
++%else \n %if (0%{?fedora} >= 26)
++Requires: compat-openssl10 >= 1.0.2
++BuildRequires: compat-openssl10-devel >= 1.0.2
+ %else
+ Requires: openssl >= 1.0.1
  BuildRequires: openssl-devel >= 1.0.1
+@@ -45,6 +48,12 @@
+ BuildRequires: systemd
  %endif
  
--%if 0%{?rhel} == 7
-+%if (0%{?rhel} == 7 || 0%{?fedora} >= 18)
- %define _group System Environment/Daemons
- %define epoch 1
- Epoch: %{epoch}
- Requires(pre): shadow-utils
- Requires: systemd
--Requires: openssl >= 1.0.1
- BuildRequires: systemd
-+
-+%if (0%{?fedora} >= 26)
-+Requires: compat-openssl10 >= 1.0.1
-+BuildRequires: compat-openssl10-devel >= 1.0.1
-+%else
-+Requires: openssl >= 1.0.1
- BuildRequires: openssl-devel >= 1.0.1
--%define dist .el7
-+%endif
-+%endif
-+
 +%if 0%{?fedora} >= 18
 +# removes -Werror in upstream build scripts.  -Werror conflicts with
 +# -D_FORTIFY_SOURCE=2 causing warnings to turn into errors.
 +Patch0: nginx-auto-cc-gcc.patch
- %endif
++%endif
++
+ # end of distribution specific definitions
  
- %if 0%{?suse_version} == 1315
-@@ -103,8 +114,14 @@
+ %define main_version 1.13.6
+@@ -102,8 +111,14 @@
      -e 's|%%PROVIDES%%|nginx|g' < %{SOURCE2} > nginx.init
  sed -e 's|%%DEFAULTSTART%%||g' -e 's|%%DEFAULTSTOP%%|0 1 2 3 4 5 6|g' \
      -e 's|%%PROVIDES%%|nginx-debug|g' < %{SOURCE2} > nginx-debug.init
