@@ -1,17 +1,31 @@
-diff -aurN nginx-1.13.6-1.el7_4.ngx.src.orig/nginx.spec nginx-1.13.6-1.el7_4.ngx.src/nginx.spec
---- nginx-1.13.6-1.el7_4.ngx.src.orig/nginx.spec	2017-10-11 00:58:54.000000000 +0900
-+++ nginx-1.13.6-1.el7_4.ngx.src/nginx.spec	2017-10-23 12:27:32.217316627 +0900
-@@ -29,6 +29,9 @@
- Requires: openssl >= 1.0.2
- BuildRequires: openssl-devel >= 1.0.2
- %define dist .el7_4
-+%else \n %if (0%{?fedora} >= 26)
+diff -aurN nginx-1.13.7-1.el7_4.ngx.src.orig/nginx.spec nginx-1.13.7-1.el7_4.ngx.src/nginx.spec
+--- nginx.spec.orig	2017-11-22 15:10:50.346188507 +0900
++++ nginx.spec	2017-11-22 15:15:16.919178678 +0900
+@@ -36,6 +36,23 @@
+ %endif
+ %endif
+ 
++%if 0%{?fedora} >= 25
++BuildRequires: redhat-lsb-core
++%define _group System Environment/Daemons
++%define epoch 1
++Epoch: %{epoch}
++Requires(pre): shadow-utils
++Requires: systemd
++BuildRequires: systemd
++%if 0%{?fedora} >= 26
 +Requires: compat-openssl10 >= 1.0.2
 +BuildRequires: compat-openssl10-devel >= 1.0.2
- %else
- Requires: openssl >= 1.0.1
- BuildRequires: openssl-devel >= 1.0.1
-@@ -45,6 +48,12 @@
++%else
++Requires: openssl
++BuildRequires: openssl-devel
++%endif
++%endif
++
+ %if 0%{?suse_version} == 1315
+ %define _group Productivity/Networking/Web/Servers
+ %define nginx_loggroup trusted
+@@ -45,6 +62,12 @@
  BuildRequires: systemd
  %endif
  
@@ -23,15 +37,15 @@ diff -aurN nginx-1.13.6-1.el7_4.ngx.src.orig/nginx.spec nginx-1.13.6-1.el7_4.ngx
 +
  # end of distribution specific definitions
  
- %define main_version 1.13.6
-@@ -102,8 +111,14 @@
-     -e 's|%%PROVIDES%%|nginx|g' < %{SOURCE2} > nginx.init
+ %define main_version 1.13.7
+@@ -103,7 +126,14 @@
  sed -e 's|%%DEFAULTSTART%%||g' -e 's|%%DEFAULTSTOP%%|0 1 2 3 4 5 6|g' \
      -e 's|%%PROVIDES%%|nginx-debug|g' < %{SOURCE2} > nginx-debug.init
+ 
 +%if 0%{?fedora} >= 18
 +%patch0 -p0
 +%endif
- 
++
  %build
 +%if 0%{?fedora} >= 26
 +export CFLAGS="-Wno-error"

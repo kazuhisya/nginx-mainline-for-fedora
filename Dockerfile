@@ -12,7 +12,8 @@ RUN dnf install -y --setopt=tsflags=nodocs \
     make \
     compat-openssl10-devel \
     pcre-devel \
-    rpm-build
+    rpm-build \
+    redhat-lsb-core
 COPY / /nginx-mainline-for-fedora
 RUN curl -OL http://nginx.org/packages/mainline/centos/7/SRPMS/nginx-${NGINX_VERSION}-${NGINX_RELEASE}.${SRPM_DIST}.src.rpm && \
     rpm -ivh ./nginx-${NGINX_VERSION}-${NGINX_RELEASE}.${SRPM_DIST}.src.rpm && \
