@@ -1,9 +1,9 @@
-FROM docker.io/fedora:26
+FROM docker.io/fedora:27
 MAINTAINER Kazuhisa Hara <kazuhisya@gmail.com>
 
 ENV TZ="JST-9" \
     MAINTAINER="Kazuhisa Hara <kazuhisya@gmail.com>" \
-    NGINX_VERSION="1.13.6" \
+    NGINX_VERSION="1.13.7" \
     NGINX_RELEASE="1" \
     SRPM_DIST="el7_4.ngx"
 
