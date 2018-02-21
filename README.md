@@ -12,7 +12,7 @@ This repository provides unofficial NGINX rpmbuild scripts for Fedora.
 
 Tested working on:
 
-- Fedora 25 x86_64
+- Fedora 27 x86_64
 
 ## Install
 
