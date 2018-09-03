@@ -1,0 +1,40 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    working_directory: ~/kazuhisya/nginx-mainline-for-fedora
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    steps:
+      - checkout
+      - run: mkdir -p $CIRCLE_ARTIFACTS $CIRCLE_TEST_REPORTS
+      - run: docker build -t kazuhisya/nginx-mainline-for-fedora -f Dockerfile .
+      - run: docker run -ti kazuhisya/nginx-mainline-for-fedora /bin/true
+      - run: docker cp $(docker ps -lq):/root/rpmbuild/RPMS/x86_64 $CIRCLE_ARTIFACTS
+      - run: docker cp $(docker ps -lq):/root/rpmbuild/SRPMS $CIRCLE_ARTIFACTS
+      - store_artifacts:
+          path: /tmp/circleci-artifacts
+  deploy:
+    machine: true
+    working_directory: ~/kazuhisya/nginx-mainline-for-fedora
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    steps:
+      - checkout
+      - run: docker build -t kazuhisya/nginx-mainline-for-fedora -f Dockerfile .
+      - run: docker run -e COPR_LOGIN=$COPR_LOGIN -e COPR_USERNAME=$COPR_USERNAME -e COPR_TOKEN=$COPR_TOKEN --entrypoint "/nginx-mainline-for-fedora/copr-deploy.sh" kazuhisya/nginx-mainline-for-fedora
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
+
+
