@@ -3,7 +3,7 @@ MAINTAINER Kazuhisa Hara <kazuhisya@gmail.com>
 
 ENV TZ="JST-9" \
     MAINTAINER="Kazuhisa Hara <kazuhisya@gmail.com>" \
-    NGINX_VERSION="1.15.2" \
+    NGINX_VERSION="1.15.3" \
     NGINX_RELEASE="1" \
     SRPM_DIST="el7_4.ngx"
 
