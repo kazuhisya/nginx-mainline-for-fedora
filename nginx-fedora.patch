@@ -1,0 +1,37 @@
+diff -aurN nginx-1.15.5-1.el7_4.ngx.src.orig/nginx.spec nginx-1.15.5-1.el7_4.ngx.src/nginx.spec > nginx-fedora.patch
+--- nginx-1.15.5-1.el7_4.ngx.src.orig/nginx.spec	2018-10-04 10:19:03.875012152 +0900
++++ nginx-1.15.5-1.el7_4.ngx.src/nginx.spec	2018-10-04 10:24:42.295129891 +0900
+@@ -36,6 +36,23 @@
+ %endif
+ %endif
+ 
++%if 0%{?fedora} >= 25
++BuildRequires: redhat-lsb-core
++%define _group System Environment/Daemons
++%define epoch 1
++Epoch: %{epoch}
++Requires(pre): shadow-utils
++Requires: systemd
++BuildRequires: systemd
++%if 0%{?fedora} >= 26
++Requires: compat-openssl10 >= 1.0.2
++BuildRequires: compat-openssl10-devel >= 1.0.2
++%else
++Requires: openssl
++BuildRequires: openssl-devel
++%endif
++%endif
++
+ %if 0%{?suse_version} >= 1315
+ %define _group Productivity/Networking/Web/Servers
+ %define nginx_loggroup trusted
+@@ -104,6 +121,9 @@
+     -e 's|%%PROVIDES%%|nginx-debug|g' < %{SOURCE2} > nginx-debug.init
+ 
+ %build
++%if 0%{?fedora} >= 26
++export CFLAGS="-Wno-error"
++%endif
+ ./configure %{BASE_CONFIGURE_ARGS} \
+     --with-cc-opt="%{WITH_CC_OPT}" \
+     --with-ld-opt="%{WITH_LD_OPT}" \
